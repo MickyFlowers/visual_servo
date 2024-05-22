@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<robot name="hole">
+    <link name="hole">
+        <visual>
+            <geometry>
+                <mesh filename="hole.STL" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="hole.STL" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+</robot>
