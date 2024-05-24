@@ -6,6 +6,8 @@ import numpy as np
 import os
 print(os.getcwd())
 from utils.rotations import calc_trans_matrix
+import matplotlib
+matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
 data = []
 if __name__ == "__main__":
@@ -54,6 +56,7 @@ if __name__ == "__main__":
 
         camera_to_end_effector_pos = np.array([0.05, 0.0, 0.02])
         camera_to_end_effector_ori = euler_angles_to_quat(np.array([0.0, 0.0, np.pi /2]), extrinsic=False)
+        # camera_to_end_effector_ori = euler_angles_to_quat(np.array([0.0, -5 * np.pi / 180, np.pi /2]), extrinsic=False)
         camera_to_end_effector_trans_matrix = calc_trans_matrix(camera_to_end_effector_pos, camera_to_end_effector_ori)
 
         hole_pos = np.array([0, 0, 0])
@@ -71,8 +74,9 @@ if __name__ == "__main__":
             continue
         if np.max(hole_feature_points_to_image, axis=0)[1] > 480 or np.min(hole_feature_points_to_image, axis=0)[1] < 0:
             continue
-        # print(hole_feature_points_to_image)
+        print(peg_feature_points_to_image)
         # figure = plt.figure()
+        # plt.plot(peg_feature_points_to_image[:, 0], peg_feature_points_to_image[:, 1], 'bo')
         # plt.plot(hole_feature_points_to_image[:, 0], hole_feature_points_to_image[:, 1], 'ro')
         # plt.show()
         data.append(dict)

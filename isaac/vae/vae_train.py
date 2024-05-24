@@ -43,7 +43,7 @@ for i in tqdm.tqdm(range(epoches), desc="Training", ncols=100):
     for batch in train_loader:
         optimizer.zero_grad()
         # normalization
-        batch = batch / torch.tensor([640, 480], dtype=torch.float32)
+        batch = (batch - torch.tensor([320, 240])) / torch.tensor([640, 480], dtype=torch.float32)
         batch = batch.reshape(batch.shape[0], -1)
         batch = batch.to(device, dtype=torch.float32)
         # print(batch.shape)
