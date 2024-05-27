@@ -117,10 +117,14 @@ class env:
 
     def sample(self):
         # sample in hand error
-        in_hand_pos_upper = np.array([0.005, 0.0, 0.14])
-        in_hand_pos_lower = np.array([-0.005, 0.0, 0.10])
-        in_hand_rot_upper = np.array([0.0, 0.3, 0.0])
-        in_hand_rot_lower = np.array([0.0, -0.1, 0.0])
+        in_hand_pos_upper = np.array([0.0, 0.0, 0.10])
+        in_hand_pos_lower = np.array([-0.0, 0.0, 0.10])
+        in_hand_rot_upper = np.array([0.0, 0.0, 0.0])
+        in_hand_rot_lower = np.array([0.0, -0.0, 0.0])
+        # in_hand_pos_upper = np.array([0.005, 0.0, 0.14])
+        # in_hand_pos_lower = np.array([-0.005, 0.0, 0.10])
+        # in_hand_rot_upper = np.array([0.0, 0.3, 0.0])
+        # in_hand_rot_lower = np.array([0.0, -0.1, 0.0])
 
         self.in_hand_error_pos = np.random.uniform(in_hand_pos_lower, in_hand_pos_upper)
         self.in_hand_error_ori = np.random.uniform(in_hand_rot_lower, in_hand_rot_upper)
@@ -194,7 +198,9 @@ class env:
                                                         hole_feature_points_to_world)
             hole_feature_to_image, peg_feature_to_image = self.feature.project_points_to_img(self.cur_camera_trans_matrix, cur_hole_trans_matrix, cur_peg_trans_matrix)          
             hole_desired_feature, peg_desired_feature = self.feature.project_points_to_img(desired_camera_trans_matrix, cur_hole_trans_matrix, cur_hole_trans_matrix @ self.desired_trans_matrix_to_hole)
-
+            cur_camera_pos = self.cur_camera_trans_matrix[:3, 3]
+            cur_camera_ori = rot_matrix_to_quat(self.cur_camera_trans_matrix[:3, :3])
+            print(cur_camera_pos, cur_camera_ori)
             if np.max(hole_feature_to_image, axis=0)[0] > self.width or np.min(hole_feature_to_image, axis=0)[0] < 0:
                 self.reset()
                 return None
@@ -202,6 +208,9 @@ class env:
                 self.reset()
                 return None
             if np.linalg.norm(vel) < 0.002:
+                self.reset()
+                return None
+            if self.count > 400:
                 self.reset()
                 return None
             return vel, hole_desired_feature, peg_desired_feature, hole_feature_to_image, peg_feature_to_image

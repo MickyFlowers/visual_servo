@@ -13,7 +13,7 @@ file_name = "desired_feature04:49PM on May 11, 2024.npy"
 # device
 device = "cuda" if torch.cuda.is_available() else "cpu"
 # get current time
-time = datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
+time = datetime.datetime.now().strftime("%B %d, %Y %I:%M%p")
 # make logs directory if not exist
 if not os.path.exists("isaac/vae/logs"):
     os.mkdir("logs")
@@ -27,7 +27,7 @@ torch.manual_seed(seed)
 
 # create dataset and dataloader
 dataset = vae_dataset(root_dir, file_name)
-batch_size = 32
+batch_size = 128
 train_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 model = vae(16, 12).to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
@@ -51,7 +51,7 @@ for i in tqdm.tqdm(range(epoches), desc="Training", ncols=100):
         output, mu, log_var, _ = model(batch)
         mse_loss = criteria(output, batch)
         latent_loss = model.latent_loss(mu, log_var)
-        loss = mse_loss + latent_loss * 0.
+        loss = 1000 * mse_loss + latent_loss
 
         total_loss += loss
         total_mse_loss += mse_loss

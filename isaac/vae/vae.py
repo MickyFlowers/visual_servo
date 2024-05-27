@@ -21,12 +21,11 @@ class vae_decoder(nn.Module):
         self.decoder = nn.Sequential(
             nn.Linear(input_dim, hidden_dim),
             nn.ReLU(),
-            nn.Linear(hidden_dim, out_dim),
-            nn.Sigmoid(),
+            nn.Linear(hidden_dim, out_dim)
         )
     
     def forward(self, x):
-        return self.decoder(x)
+        return torch.tanh(self.decoder(x))
 
 class vae(nn.Module):
     def __init__(self, input_dim, latent_dim):
