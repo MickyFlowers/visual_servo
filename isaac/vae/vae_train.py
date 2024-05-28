@@ -51,7 +51,7 @@ for i in tqdm.tqdm(range(epoches), desc="Training", ncols=100):
         output, mu, log_var, _ = model(batch)
         mse_loss = criteria(output, batch)
         latent_loss = model.latent_loss(mu, log_var)
-        loss = 1000 * mse_loss + latent_loss
+        loss = mse_loss
 
         total_loss += loss
         total_mse_loss += mse_loss
